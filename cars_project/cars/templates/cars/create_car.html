@@ -4,13 +4,16 @@
 
 {% block content %}
 <div class="container">
-
+    {% if request.user.is_superuser %}
     <form class="w-50 m-auto" method="post" style="margin: 10% 0%; padding: 5% 5%" enctype="multipart/form-data">
       <h2 align="center">Create a car</h2>
             {% csrf_token %}
             {% bootstrap_form form %}
       <button type="submit" class="button btn btn-success">Create</button>
     </form>
+    {% else %}
+        <p style="color: darkred;">"You do not have the permissions to create cars! Only superusers can do that...</p>
+    {% endif %}
 </div>
 
 {% endblock %}

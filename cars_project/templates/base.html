@@ -85,14 +85,16 @@
             <li class="nav-item">
                  <a class="nav-link" href="{% url 'accounts:sign_out' %}">Logout</a>
             </li>
-            {% if request.user.is_superuser %}
+            {% if request.user.is_superuser or request.user.is_staff %} <!-- Staff and superusers can increase their money -->
                 <li class="nav-item">
                     <a class="nav-link" style="color: lawngreen;" href="{% url 'profiles:update_money' %}">Get Money</a>
                 </li>
             {% endif %}
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'cars:create_car' %}">Create car</a>
-            </li>
+            {% if request.user.is_superuser %} <!-- Only superusers can create cars -->
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'cars:create_car' %}">Create car</a>
+                </li>
+            {% endif %}
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'cars:list_cars' %}" style="color: lawngreen;">Available Cars</a>
             </li>

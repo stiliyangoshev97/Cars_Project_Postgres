@@ -5,10 +5,13 @@ from django.db import models
 
 UserModel = get_user_model()
 
+from validators import positive_number, only_letters_validator, validate_image
+
 class Car(models.Model):
 
     hp = models.PositiveIntegerField(
         blank=True,
+
     )
 
     TYPE_CHOICE_FERRARI = 'ferrari'
@@ -30,6 +33,9 @@ class Car(models.Model):
     photo = models.ImageField(
         upload_to='cars',
         blank=True,
+        validators=(
+            validate_image,
+        )
     )
 
     price = models.PositiveIntegerField(

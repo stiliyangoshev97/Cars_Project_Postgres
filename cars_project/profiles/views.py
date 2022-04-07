@@ -20,7 +20,7 @@ class ProfileDetailsView(TemplateView, LoginRequiredMixin):
 
     def check_for_car(self):
         car = None
-        if BoughtCars.objects.get(racer=self.request.user):
+        if BoughtCars.objects.filter(racer=self.request.user).exists():
             car = BoughtCars.objects.get(racer=self.request.user)
         else:
             car = None

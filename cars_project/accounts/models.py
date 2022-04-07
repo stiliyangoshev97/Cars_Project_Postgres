@@ -4,6 +4,8 @@ from django.db import models
 
 from accounts.managers import  CarsUserManager
 
+from validators import positive_number, only_letters_validator, validate_image
+
 # Create your models here.
 
 class CarsUser(AbstractBaseUser, PermissionsMixin):

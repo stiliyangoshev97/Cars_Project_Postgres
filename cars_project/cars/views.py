@@ -121,7 +121,7 @@ def race(request):
 
     has_car = False
 
-    if Profile.objects.get(user=request.user):
+    if BoughtCars.objects.filter(racer=request.user).exists():
         has_car = True
 
     if request.method == "POST":
