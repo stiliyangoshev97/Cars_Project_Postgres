@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <form class="w-50 m-auto" method="post" style="margin: 10% 0%; padding: 5% 5%" enctype="multipart/form-data">
+              <h2 align="center">Reviews about <b style="color: orangered;">{{ car.type|upper }}</b></h2>
+                    {% csrf_token %}
+                    {% bootstrap_form form %}
+              <button type="submit" class="button btn btn-success">Write</button>
+            </form>
+        </div>
+        <div class="col">
+            <b style="color: whitesmoke;">Current reviews </b><br>
+            {% for comment in comments %}
+                {% if comment.writer.id != user.id  %}
+                    <b style="color: red;">{{ comment.writer.email }}:</b> <i style="color: lawngreen;">{{ comment.text }}</i>
+                    <!-- If user is staff, he can delete comments. If user is staff and also superuser, he can edit them also
+                    Regular users can only edit and delete their own posts
+                    -->
+                        {% if user.is_staff %}
+                            <a style="color: red;" href="{% url 'cars:delete_comment' comment.id %}">[Delete]</a><br>
+                        {% endif %}
+                        {% if user.is_superuser %}
+                            <div style="position: relative;"><a href="{% url 'cars:edit_comment' comment.id %}" style="margin-left: 200px; color: greenyellow;">[Edit]</a></div>
+                         {% endif %}
+                        <br>
+                {% else %}
+                    <b style="color: red;">{{ you }}:</b> <i style="color: lawngreen;">{{ comment.text }}</i><div style="position: relative;"><a href="{% url 'cars:edit_comment' comment.id %}" style="margin-left: 200px; color: greenyellow;">[Edit</a> or <a style="color: red;" href="{% url 'cars:delete_comment' comment.id %}">Delete]</a></div><br>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

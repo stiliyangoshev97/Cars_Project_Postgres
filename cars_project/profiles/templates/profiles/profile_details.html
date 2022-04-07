@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="row">
+    <div class="col">
+        {% if profile.profile_photo %}
+            <p><img src="{{ profile.profile_photo.url }}" style="width: 300px; height: 300px; border: 1px solid whitesmoke;"></p>
+        {% endif %}
+    </div>
+    <div class="col text-muted">
+        <hr>
+        <p>First Name: <b>{{ profile.first_name }}</b></p>
+        <p>Last Name: <b>{{ profile.last_name }}</b></p>
+        <p>Money: <b>{{ profile.money }}</b></p>
+    {% if car != None %}
+        <p>Car: <b>{{ car|upper }}</b>&nbsp;&nbsp;
+
+                <a href="{% url 'cars:sell_car' %}"><button class="btn btn-success" style="color: whitesmoke;">Sell</button></a></p>
+    {% else %}
+            <p>Car: <b>None</b>&nbsp;
+    {% endif %}
+        <hr>
+    </div>
+    <div class="w-100"></div>
+    <div class="col text">
+    </div>
+    <div class="col">
+        <!-- Content -->
+    </div>
+
+
+</div>
+
+{% endblock %}

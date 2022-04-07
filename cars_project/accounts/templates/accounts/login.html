@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="container">
+    <form class="w-50 m-auto" method="post" style="margin: 10% 0%; padding: 5% 5%">
+      <h2 align="center">Login</h2>
+            {% csrf_token %}
+            {% bootstrap_form form %}
+      <button type="submit" class="button btn btn-primary">Login</button>
+    </form>
+</div>
+
+{% endblock %}

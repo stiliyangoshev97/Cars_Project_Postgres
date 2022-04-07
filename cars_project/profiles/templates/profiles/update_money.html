@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="container">
+    <p class="text-muted">Current wealth: <b style="color: green;">{{ current_money }}</b></p>
+    {% if request.user.is_superuser %}
+        <form class="w-50 m-auto" method="post" style="margin: 10% 0%; padding: 5% 5%" enctype="multipart/form-data">
+          <h2 align="center">Increase Money</h2>
+                {% csrf_token %}
+                {% bootstrap_form form %}
+          <button type="submit" class="button btn btn-success">Get Paid</button>
+        </form>
+    {% else %}
+        <p style="color: darkred;">You must be a superuser to use this function!</p>
+    {% endif %}
+
+</div>
+
+{% endblock %}

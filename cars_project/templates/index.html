@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load bootstrap4 %}
+{% load custom_tags %}
+
+
+{% block content %}
+
+<h3>Hello {{ request.user }}</h3>
+    {% if user.is_authenticated %}
+         {% is_complete %}
+    {% endif %}
+
+
+
+     <div align="right">
+    {% if user.is_superuser and user.is_authenticated %}
+        <span class="superuser">User Type: <b>Superuser</b></span>
+    {% else %}
+
+        <span class="standarduser">User Type: <b>Standard user</b></span>
+
+    {% endif %}
+    </div>
+
+
+{% endblock %}

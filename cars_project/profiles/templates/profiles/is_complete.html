@@ -1,0 +1,7 @@
+{% if not is_complete %}
+    <b>You profile is not completed. Click <a href="{% url 'profiles:update_profile' %}">here</a> to fulfill it!</b>
+{% else %}
+    <div class="text-light" align="center">
+           <a style="color: white;" href="{% url 'profiles:profile_details' %}"><button class="btn btn-dark">Profile Details</button></a>
+    </div>
+{% endif %}
