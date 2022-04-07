@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
     <p class="text-muted">Current wealth: <b style="color: green;">{{ current_money }}</b></p>
-    {% if request.user.is_superuser %}
+    {% if request.user.is_superuser or request.user.is_staff %}
         <form class="w-50 m-auto" method="post" style="margin: 10% 0%; padding: 5% 5%" enctype="multipart/form-data">
           <h2 align="center">Increase Money</h2>
                 {% csrf_token %}

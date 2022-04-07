@@ -7,11 +7,16 @@ from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 
 from accounts.models import CarsUser
+from validators import positive_number, only_letters_validator, validate_image
+
 
 class Profile(models.Model):
     profile_photo = models.ImageField(
         blank=True,
         upload_to='profiles',
+        validators=(
+            validate_image,
+        )
     )
 
     user = models.OneToOneField(
@@ -23,16 +28,25 @@ class Profile(models.Model):
     first_name = models.CharField(
         blank=True,
         max_length=24,
+        validators=(
+            only_letters_validator,
+        )
     )
 
     last_name = models.CharField(
         blank=True,
         max_length=24,
+        validators=(
+            only_letters_validator,
+        )
     )
 
     money = models.FloatField(
         default=0,
         blank=True,
+        validators=(
+            positive_number,
+        )
     )
 
 
