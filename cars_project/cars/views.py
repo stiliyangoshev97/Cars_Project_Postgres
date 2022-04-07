@@ -120,9 +120,11 @@ def loser_message(request):
 def race(request):
 
     has_car = False
+    user_car = None
 
     if BoughtCars.objects.filter(racer=request.user).exists():
         has_car = True
+        user_car = BoughtCars.objects.get(racer=request.user)
 
     if request.method == "POST":
         form = CarsRaceForm(request.POST)
@@ -144,6 +146,7 @@ def race(request):
     context = {
         "form": form,
         "has_car": has_car,
+        "user_car": user_car,
     }
 
     return render(request, 'cars/race.html', context)

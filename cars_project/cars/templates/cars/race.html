@@ -5,6 +5,10 @@
 {% block content %}
 <div class="container">
 {% if has_car %}
+    <div class="col">
+        <b>Your car: {{ user_car.car.type|capfirst }}</b><br>
+        <b>Horse Power: {{ user_car.car.hp }}</b>
+    </div>
     <form class="w-50 m-auto" method="post" style="margin: 10% 0%; padding: 5% 5%" enctype="multipart/form-data">
             {% csrf_token %}
             {% bootstrap_form form %}
