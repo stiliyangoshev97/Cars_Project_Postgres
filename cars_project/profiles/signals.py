@@ -20,7 +20,7 @@ def user_created(sender, instance, created, **kwargs):
 
 # Check if profile is complete
 # We do this before saving the information in the model
-# in pre-save we do not have created
+# in pre-save we do not have "created"
 
 @receiver(pre_save, sender = Profile)
 def profile_is_complete(sender, instance, **kwargs):
@@ -29,12 +29,7 @@ def profile_is_complete(sender, instance, **kwargs):
     else:
         instance.is_complete = False
 
-
-# Check if user is verified
-
-
-
 # Signals are used when we always wants in a certain situation
 # to make something happen. It's also used for verifying the email
-# address
+# address, etc...
 

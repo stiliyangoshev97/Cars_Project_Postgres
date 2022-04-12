@@ -6,15 +6,18 @@
     <div class="row">
 
     {% for car in cars %}
-            <!-- Check if the car is already bought by somebody else, create a boolean field in the models of the car -->
+            <!-- Check if the car is already bought by somebody else with boolean field "is_sold" in the models of the car -->
                 <div class="col">
                     {{ car.type|upper }} <br>
+
                     <img src="{{ car.photo.url }}" class="car_image"> <br>
                     <b>Price: </b>{{ car.price }} <br>
                     <b>Horse Power: </b>{{ car.hp }}<br>
-                    {% if not already_bought %}
+
+                    {% if not already_bought %} {# If the car is not in bought cars model #}
                         <a href="{% url 'cars:buy_car' car.id %}"><btn class="btn btn-success">Buy car</btn></a>
-                     {% endif %}
+                    {% endif %} {# If the car is still not sold then they can write a review about it #}
+
                     <a href="{% url 'cars:write_comment' car.id %}" style="color: whitesmoke; text-underline: dodgerblue;"><i>Write a review</i></a>
                 </div>
     {% endfor %}

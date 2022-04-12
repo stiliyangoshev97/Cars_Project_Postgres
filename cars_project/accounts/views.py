@@ -52,7 +52,7 @@ class SignInView(LoginView):
     form_class = LoginForm
     template_name = 'accounts/login.html'
 
-    def form_valid(self, form):
+    def form_valid(self, form): # the user must be authenticated before being able to login
         user = authenticate(
             email = form.cleaned_data['username'],
             password = form.cleaned_data['password'],
@@ -62,7 +62,7 @@ class SignInView(LoginView):
         if not user: # if user doesn't get authenticated
             raise ValidationError("Wrong username or password")
 
-        login(self.request, user)
+        login(self.request, user) # if user is successfully authenticated then he can login
 
         return super().form_valid(form)
 

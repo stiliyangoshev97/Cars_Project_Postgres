@@ -51,7 +51,7 @@ class Car(models.Model):
         return self.type
 
 
-class BoughtCars(models.Model):
+class BoughtCars(models.Model): # Each car in Bought Car model has a fk to the racer and to the car
     racer = models.OneToOneField(
         UserModel,
         on_delete=models.CASCADE,

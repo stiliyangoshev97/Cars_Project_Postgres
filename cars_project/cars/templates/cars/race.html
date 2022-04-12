@@ -2,6 +2,8 @@
 {% load static %}
 {% load bootstrap4 %}
 
+
+{# Only a user that has a car can race. Users with no car will receieve a notification message #}
 {% block content %}
 <div class="container">
 {% if has_car %}
