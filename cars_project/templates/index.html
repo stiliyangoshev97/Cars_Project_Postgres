@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 {% extends 'base.html' %}
 {% load bootstrap4 %}
-{% load custom_tags %}
+
+{% load custom_tags %} {# Load custom_tags from profiles/templatetags #}
 
 
 {% block content %}
 
 <h3>Hello {{ request.user }}</h3>
     {% if user.is_authenticated %}
-         {% is_complete %}
+         {% is_complete %} {# Templatetag will only show if user is authenticated #}
     {% endif %}
 
 

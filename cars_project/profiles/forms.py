@@ -6,7 +6,7 @@ from django.forms import ModelForm
 
 from profiles.models import Profile
 
-UserModel = get_user_model()
+UserModel = get_user_model() # Reference the user model
 
 
 class UpdateProfileForm(ModelForm):

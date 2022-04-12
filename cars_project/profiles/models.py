@@ -22,7 +22,7 @@ class Profile(models.Model):
     user = models.OneToOneField(
         CarsUser,
         on_delete=models.CASCADE,
-        primary_key=True,
+        primary_key=True, # User and Profile will have the same pk
     )
 
     first_name = models.CharField(
@@ -59,6 +59,7 @@ class Profile(models.Model):
         default=False,
     )
 
+    # is_complete is used to check if profile is all completed or partially
     is_complete = models.BooleanField(
         blank=True,
         default=False,

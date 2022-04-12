@@ -20,14 +20,14 @@ class CarCommentForm(ModelForm):
         model = CarComment
         exclude = ('car','writer',)
 
-
+# Form that allows racers to race each other
 class CarsRaceForm(forms.Form):
-    cars = Car.objects.all()
+    cars = Car.objects.all() # Select all cars
 
-    cars_list = []
+    cars_list = [] # Creating a list for the cars
 
     for car in cars:
-        cars_list.append(car.type) # Creating a list with the current cars
+        cars_list.append(car.type) # Adding to the list the current cars
 
     CARS_CHOICES = [] # Creating an empty list for the current cars
 
@@ -36,7 +36,7 @@ class CarsRaceForm(forms.Form):
 
     car_to_race = forms.CharField(
         label='Who do you want to race?',
-        widget=forms.Select(choices=CARS_CHOICES),
+        widget=forms.Select(choices=CARS_CHOICES), # Choices will be visible in a form
     )
 
     chosen_car = forms.CharField(

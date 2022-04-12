@@ -18,6 +18,7 @@ from profiles.models import Profile
 from profiles.forms import UpdateProfileForm
 
 
+# Car can be created only by superusers -> Logic designed in the template
 class CreateCarView(CreateView, LoginRequiredMixin):
     model = Car
     fields = ('hp', 'type', 'photo', 'price',)
@@ -33,14 +34,14 @@ class ListCarsView(ListView, LoginRequiredMixin):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        already_bought = False
-        cars = Car.objects.filter(is_sold=False)
+        already_bought = False # Cars that are bought won't be displayed
+        cars = Car.objects.filter(is_sold=False) # Filter a list with only the not sold cars
         bought_cars = BoughtCars.objects.all()
-        profile = Profile.objects.get(user=self.request.user)
+        profile = Profile.objects.get(user=self.request.user) # Get the profile of the logged user
 
         for car in cars:
             for bought_car in bought_cars:
-                if bought_car.racer.id == profile.user.id:
+                if bought_car.racer.id == profile.user.id: # Check if the racer in bought car model is the same as the profile of the logged user
                     already_bought = True
 
         context['already_bought'] = already_bought
@@ -67,12 +68,13 @@ def buy_car(request, pk):
     car = Car.objects.get(pk=pk)
 
     profile = Profile.objects.get(pk=racer.id)
-    if profile.money >= car.price:
+
+    if profile.money >= car.price: # Check if the racer has enough money to buy the car. Money are stored in his profile
         profile.money = profile.money - car.price
         profile.save()
-        bought_car = BoughtCars(racer=racer, car=car)
+        bought_car = BoughtCars(racer=racer, car=car) # Add a car which was successfully bought to the model
         bought_car.save()
-        car.is_sold = True
+        car.is_sold = True # When a car is bought, this boolean field will be True until the car is sold again
         car.save()
         return redirect('index')
     else:
@@ -81,13 +83,13 @@ def buy_car(request, pk):
 
 @login_required
 def sell_car(request):
-    bought_car = BoughtCars.objects.get(racer=request.user)
-    car = bought_car.car
+    bought_car = BoughtCars.objects.get(racer=request.user) # Select the car of the logged user which he wants to sell
+    car = bought_car.car # Select the car
     car.is_sold = False
     car.save()
 
     profile = Profile.objects.get(pk=request.user.pk)
-    profile.money = profile.money + car.price
+    profile.money = profile.money + car.price # When the car is sold, the racer will get his money back
     profile.save()
 
     # When car is sold, money get back to the owner
@@ -116,6 +118,7 @@ def loser_message(request):
 
     return render(request, 'cars/loser_message.html', context)
 
+# Only users that have a car can race. The logic is in the template
 @login_required
 def race(request):
 
@@ -136,7 +139,7 @@ def race(request):
             user_car = BoughtCars.objects.get(racer=request.user)
             chosen_car = Car.objects.get(type=str(car_to_race)) # Query car where car.type is equal to the string car_to_race
 
-            if user_car.car.hp > chosen_car.hp:
+            if user_car.car.hp > chosen_car.hp: # Check which car has more horse power
                 return redirect('cars:winner_message')
             else:
                 return redirect('cars:loser_message')
@@ -152,7 +155,10 @@ def race(request):
     return render(request, 'cars/race.html', context)
 
 
-
+# If logged user is a part of the staff, he can delete the comment of other users, but he cannot edit them
+# If logged user is a superuser, he can edit and delete comments of other users
+# If logged user is a regular user, he can edit and delete only his own comments
+# Logic is in the template
 class WriteCommentView(LoginRequiredMixin, CreateView):
     template_name = 'cars/car_comments.html'
     form_class = CarCommentForm
@@ -166,8 +172,6 @@ class WriteCommentView(LoginRequiredMixin, CreateView):
         self.comments = CarComment.objects.filter(car=self.car)
 
         # If user wrote the comment he will see "You" instead of the email address
-
-
         return super().get(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -178,7 +182,7 @@ class WriteCommentView(LoginRequiredMixin, CreateView):
         return url
 
     def form_valid(self, form, **kwargs):
-        car = Car.objects.get(pk=self.kwargs.get('pk'))
+        car = Car.objects.get(pk=self.kwargs.get('pk')) # Select the car we are writing the comment for
         comment_form = form.save(commit=False)
         comment_form.car = car
         comment_form.writer = self.request.user
@@ -211,15 +215,13 @@ class EditCommentView(UpdateView, LoginRequiredMixin):
     template_name = 'cars/edit_comment.html'
 
     def get_success_url(self, **kwargs):
-        comment = CarComment.objects.get(pk=self.kwargs.get('pk'))
-
         url = reverse_lazy('cars:list_cars')
         return url
 
     def get_context_data(self, **kwargs):
         context =  super().get_context_data(**kwargs)
-        comment = CarComment.objects.get(pk=self.kwargs.get('pk'))
-        context['comment'] = CarComment.objects.get(pk=self.object.pk)
+        context['comment'] = CarComment.objects.get(pk=self.kwargs.get('pk')) # Select the comment that will be edited
+        #context['comment'] = CarComment.objects.get(pk=self.object.pk) # Works also as the line above
         context['comment_text'] = CarComment.objects.get(pk=self.object.pk).text
 
         return context

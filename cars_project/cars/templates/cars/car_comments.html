@@ -18,17 +18,17 @@
             {% for comment in comments %}
                 {% if comment.writer.id != user.id  %}
                     <b style="color: red;">{{ comment.writer.email }}:</b> <i style="color: lawngreen;">{{ comment.text }}</i>
-                    <!-- If user is staff, he can delete comments. If user is staff and also superuser, he can edit them also
-                    Regular users can only edit and delete their own posts
-                    -->
-                        {% if user.is_staff %}
+
+                        {% if user.is_staff %} {# If user is staff, he can delete comments. #}
                             <a style="color: red;" href="{% url 'cars:delete_comment' comment.id %}">[Delete]</a><br>
                         {% endif %}
-                        {% if user.is_superuser %}
+
+                        {% if user.is_superuser %} {# If user is staff and also superuser, he can edit them also #}
                             <div style="position: relative;"><a href="{% url 'cars:edit_comment' comment.id %}" style="margin-left: 200px; color: greenyellow;">[Edit]</a></div>
                          {% endif %}
+
                         <br>
-                {% else %}
+                {% else %} {# Regular users can only edit and delete their own posts #}
                     <b style="color: red;">{{ you }}:</b> <i style="color: lawngreen;">{{ comment.text }}</i><div style="position: relative;"><a href="{% url 'cars:edit_comment' comment.id %}" style="margin-left: 200px; color: greenyellow;">[Edit</a> or <a style="color: red;" href="{% url 'cars:delete_comment' comment.id %}">Delete]</a></div><br>
                 {% endif %}
             {% endfor %}

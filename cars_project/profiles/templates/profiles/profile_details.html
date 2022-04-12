@@ -14,7 +14,8 @@
         <p>First Name: <b>{{ profile.first_name }}</b></p>
         <p>Last Name: <b>{{ profile.last_name }}</b></p>
         <p>Money: <b>{{ profile.money }}</b></p>
-    {% if car != None %}
+
+    {% if car != None %} {# Check if user has a car #}
         <p>Car: <b>{{ car|upper }}</b>&nbsp;&nbsp;
 
                 <a href="{% url 'cars:sell_car' %}"><button class="btn btn-success" style="color: whitesmoke;">Sell</button></a></p>
@@ -22,6 +23,8 @@
             <p>Car: <b>None</b>&nbsp;
     {% endif %}
         <hr>
+    <a href="{% url 'profiles:update_profile' %}"><button type="input" class="btn btn-primary">Edit Profile</button></a>
+    <a href="{% url 'profiles:delete_profile' profile.pk %}"><button type="input" class="btn btn-danger">Delete Profile</button></a>
     </div>
     <div class="w-100"></div>
     <div class="col text">
