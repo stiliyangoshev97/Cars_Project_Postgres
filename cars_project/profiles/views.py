@@ -96,7 +96,7 @@ class IncreaseMoneyView(FormView, LoginRequiredMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['current_money'] = Profile.objects.get(user=self.request.user).money
+        context['current_money'] = Profile.objects.get(user=self.request.user).money # Money from the profile of the current logged user
 
         return context
 
@@ -123,9 +123,7 @@ class IncreaseMoneyView(FormView, LoginRequiredMixin):
 
         return super().form_valid(form)
 
-    def form_invalid(self, form):
-        raise ValidationError('Form not valid!')
-        return super().form_invalid(form)
+  
 
 
 

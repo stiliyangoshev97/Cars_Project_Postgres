@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block content %}
+<div class="container">
+{# Car can be created only by superusers. Normal users will see a notification that they do not have permissions to create cars. #}
+    {% if request.user.is_superuser or request.user.is_staff %} {# Check if user is a superuser or staff #}
+    <form class="w-50 m-auto" method="post" style="margin: 10% 0%; padding: 5% 5%" enctype="multipart/form-data">
+      <h2 align="center">Edit {{ object }}</h2>
+            {% csrf_token %}
+            {% bootstrap_form form %}
+      <button type="submit" class="button btn btn-success">Edit</button>
+    </form>
+    {% else %} {# If user is not a superuser or staff then he do not have the permissions to edit cars #}
+        <p style="color: darkred;">"You do not have the permissions to create cars! Only superusers can do that...</p>
+    {% endif %}
+</div>
+
+{% endblock %}
