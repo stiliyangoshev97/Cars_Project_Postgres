@@ -154,6 +154,19 @@ def race(request):
 
     return render(request, 'cars/race.html', context)
 
+class EditCarView(UpdateView, LoginRequiredMixin):
+    model = Car
+    form_class = CreateCarForm
+    success_url = reverse_lazy('cars:list_cars')
+    template_name = 'cars/edit_car.html'
+
+@login_required
+def delete_car(request, pk):
+    car = Car.objects.get(pk=pk)
+    car.delete()
+
+    return redirect('cars:create_car')
+
 
 # If logged user is a part of the staff, he can delete the comment of other users, but he cannot edit them
 # If logged user is a superuser, he can edit and delete comments of other users
@@ -165,7 +178,6 @@ class WriteCommentView(LoginRequiredMixin, CreateView):
     model = CarComment
 
     def get(self, request, *args, **kwargs):
-        user = request.user
         self.car = Car.objects.get(pk=self.kwargs.get('pk'))
 
         # Filter comments where car is equal to the selected car

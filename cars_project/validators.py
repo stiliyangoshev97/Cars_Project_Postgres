@@ -9,7 +9,7 @@ def only_letters_validator(value):
 
 def positive_number(value):
     if value < 0:
-        raise ValidationError('Budget cannot be less than 0!')
+        raise ValidationError('Number cannot be less than 0!')
 
 
 def validate_image(fieldfile_obj):

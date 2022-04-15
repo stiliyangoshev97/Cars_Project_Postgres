@@ -19,6 +19,10 @@
                     {% endif %} {# If the car is still not sold then they can write a review about it #}
 
                     <a href="{% url 'cars:write_comment' car.id %}" style="color: whitesmoke; text-underline: dodgerblue;"><i>Write a review</i></a>
+                    {% if request.user.is_superuser or request.user.is_staff %}
+                        <a href="{% url 'cars:edit_car' car.id %}" style="color: green;"><b>Edit car</b></a>
+                        <a href="{% url 'cars:delete_car' car.id %}" style="color: red;"><b>Delete car</b></a>
+                    {% endif %}
                 </div>
     {% endfor %}
 </div>
